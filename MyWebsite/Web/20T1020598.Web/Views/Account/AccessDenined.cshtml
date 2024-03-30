@@ -1,0 +1,12 @@
+﻿
+@{
+}
+<script>
+    // Hiển thị cảnh báo khi trang được tải
+    window.onload = function () {
+        var errorMessage = '@Html.Raw(ViewBag.ErrorMessage)'; // Giải mã thông báo
+        if (errorMessage) {
+            alert(errorMessage); // Hiển thị cảnh báo
+        }
+    };
+</script>

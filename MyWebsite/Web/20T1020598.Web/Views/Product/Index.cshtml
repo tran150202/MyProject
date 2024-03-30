@@ -1,0 +1,92 @@
+﻿@using static SV20T1020598.Web.Models.PaginationSearchInput
+@model ProductSearchInput
+
+@{
+	ViewBag.Title = "Quản lý mặt hàng";
+}
+
+<div class="box box-primary">
+	<div class="box-body">
+
+		<!--Form tìm kiếm-->
+		<form id="formSearch" action="~/Product/Search" method="post" data-container="#searchResult">
+			<input type="hidden" name="@nameof(Model.PageSize)" value="@Model.PageSize" />
+			<div class="row">
+				<div class="col-sm-2 col-xs-12" style="margin-right:-20px">
+					@* <select class="form-control" name="category">
+					<option>--Loại Hàng--</option>
+					@foreach (var item in SV20T1020105.BusinessLayers.CommonDataService.ListOfCategories2(1, 20, ""))
+					{
+					<option value="@item.CategoryID">@item.CategoryName</option>
+					}
+
+					</select> *@
+					@Html.DropDownListFor(m => m.CategoryID, SelectListHelper.Categories(), new { @class = "form-control select2", @onchange = "doSearch('#formSearch', 1)" })
+				</div>
+				<div class="col-sm-5 col-xs-12">
+					@* <select class="form-control" name="suplier">
+					<option>--Nhà cung cấp--</option>
+					@foreach (var item in SV20T1020105.BusinessLayers.CommonDataService.ListOfSuppliers2(1, 20, ""))
+					{
+					<option value="@item.SupplierID">@item.SupplierName</option>
+					}
+					</select> *@
+					@Html.DropDownListFor(m => m.SupplierID, SelectListHelper.Suppliers(), new { @class = "form-control select2", @onchange = "doSearch('#formSearch', 1)" })
+				</div>
+				<div class="col-sm-5 col-xs-12 input-group">
+					<input name="searchValue" type="text" class="form-control"
+						   placeholder="Nhập tên loại hàng cần tìm" value="@Model.SearchValue">
+					<div class="input-group-btn">
+						<button class="btn btn-default" type="submit">
+							<i class="glyphicon glyphicon-search"></i>
+						</button>
+						<a href="~/Product/Create" class="btn btn-primary" style="margin-left:10px">
+							<i class="fa fa-plus"></i> Bổ sung
+						</a>
+					</div>
+				</div>
+			</div>
+
+
+		</form>
+
+		<!--Hiển thị kết quả tìm kiếm-->
+		<div id="searchResult"></div>
+	</div>
+</div>
+@section scripts {
+	<script>
+		$(document).ready(function (e) {
+			$("#formSearch").submit(function (e) {
+				e.preventDefault();
+				doSearch(this, 1);
+				return;
+			});
+			doSearch("#formSearch", @Model.Page);
+		});
+
+		function doSearch(formSearch, page) {
+			var action = $(formSearch).prop("action");
+			var method = $(formSearch).prop("method");
+			var container = $(formSearch).data("container");
+
+			var searchData = $(formSearch).serializeArray();
+			searchData.push({ "name": "Page", "value": page });
+
+			$.ajax({
+				url: action,
+				type: method,
+				data: searchData,
+				async: false,
+				error: function () {
+					alert("Your request is not valid!");
+				},
+				success: function (data) {
+					$(container).html(data);
+				}
+			});
+		}
+
+	</script>
+
+}

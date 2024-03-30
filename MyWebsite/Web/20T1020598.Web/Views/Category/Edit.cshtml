@@ -1,0 +1,45 @@
+﻿@model SV20T1020598.DomainModels.Category
+@{
+
+}
+<div class="box box-primary">
+    <div class="box-body">
+        <form action="~/Category/Save" method="post">
+
+            @*  //Hiển thị tất cả thông báo lỗi có trong ModelState
+            @Html.ValidationSummary("", new { @style = "color:#f00"}) *@
+            @Html.HiddenFor(m => m.CategoryID)
+            @*  <input type="hidden" name="CategoryId" value="@Model.CategoryID" /> *@
+            <div class="form-group">
+                <label>Tên loại hàng:</label>
+                @Html.TextBoxFor(m => m.CategoryName, new { @class = "form-control", @autofocus = "autofocus" })
+                @* <input type="text" class="form-control" name="CateoryName" autofocus value="@Model.CustomerName"> *@
+                @Html.ValidationMessageFor(m => m.CategoryName, "", new { @style = "color:#f00" })
+            </div>
+
+
+            <div class="form-group">
+                <label>Mô tả:</label>
+                <input type="text" class="form-control" name="@nameof(Model.Description)" value="@Model.Description"/>
+                @Html.ValidationMessage("Description", new { @style = "color:#f00" })
+
+            </div>
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-floppy-o"></i>Lưu dữ liệu
+                </button>
+                <a href="~/Category" class="btn btn-defautl">
+                    Quay lại
+                </a>
+            </div>
+
+            <div class="form-group">
+                @Html.ValidationMessage("Error", new { @style = "color:#f00" })
+
+            </div>
+        </form>
+
+    </div>
+</div>
